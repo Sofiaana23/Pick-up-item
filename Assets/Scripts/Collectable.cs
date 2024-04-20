@@ -17,15 +17,20 @@ public class Collectable : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+         VerifyPlayer_AddInventory(other.gameObject);
+    }
+
+    private void VerifyPlayer_AddInventory(GameObject other)
+    {
+        if (other.CompareTag("Player"))
         {
             Inventory inventory;
-            if (collision.gameObject.TryGetComponent<Inventory>(out inventory))
+            if (other.TryGetComponent<Inventory>(out inventory))
             {
                 // Only get to this block if its a player, and has an Inventory script attached
-                inventory.Collect(gameObject.name);
+                inventory.Collect(name);
                 GameObject.Destroy(gameObject);
             }
         }
